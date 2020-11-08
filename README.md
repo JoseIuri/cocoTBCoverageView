@@ -34,7 +34,7 @@ Packages used:
 
 ## Running the tests
 
-To run the application just do the execute the script.
+To run the application just execute the script.
 
 ```
 python coverageView.py
