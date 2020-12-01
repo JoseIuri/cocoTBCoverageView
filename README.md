@@ -1,4 +1,4 @@
-# cocTBCoverageView
+# cocoTBCoverageView
 
 ## Table of Contents
 
