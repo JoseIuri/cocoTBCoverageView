@@ -39,6 +39,10 @@ To run the application just execute the script.
 ```
 python coverageView.py
 ```
+or
+```
+python coverageView.py /path/to/coverage.xml
+```
 
 ## Authors
 
