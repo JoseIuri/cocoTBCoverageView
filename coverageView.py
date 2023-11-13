@@ -9,6 +9,8 @@
 # 					   cocoTB coverage data exported from XML file
 ######################################################################
 
+import os
+import argparse
 import xml.etree.ElementTree as ET
 import tkinter as tk
 import tkinter.ttk as ttk
@@ -85,33 +87,50 @@ def reload(master):
     print_coverage(root, 0, master)
     
 
-master = tk.Tk() 
-master.title("Coverage Results")
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description='cocotb-coverage GUI viewer')
+    parser.add_argument('xml_file', help='XML filename', nargs='?', default=os.getcwd())
+    args = parser.parse_args()
 
+    master = tk.Tk()
+    master.title("Coverage Results")
 
-s = ttk.Style()
-s.theme_use('clam')
-s.configure("red.Horizontal.TProgressbar", foreground='red', background='red')
+    s = ttk.Style()
+    s.theme_use('clam')
+    s.configure("red.Horizontal.TProgressbar", foreground='red', background='red')
 
-w = ttk.Style()
-w.theme_use('clam')
-w.configure("green.Horizontal.TProgressbar", foreground='forest green', background='forest green')
+    w = ttk.Style()
+    w.theme_use('clam')
+    w.configure("green.Horizontal.TProgressbar", foreground='forest green', background='forest green')
 
-z = ttk.Style()
-z.theme_use('clam')
-z.configure("yellow.Horizontal.TProgressbar", foreground='goldenrod', background='goldenrod')
+    z = ttk.Style()
+    z.theme_use('clam')
+    z.configure("yellow.Horizontal.TProgressbar", foreground='goldenrod', background='goldenrod')
 
-menubar = tk.Menu(master)
-filemenu = tk.Menu(menubar, tearoff=0)
+    menubar = tk.Menu(master)
+    filemenu = tk.Menu(menubar, tearoff=0)
 
-filemenu.add_command(label="Open", command=lambda: open_file(master))
-filemenu.add_command(label="reload", command=lambda: reload(master))
+    filemenu.add_command(label="Open", command=lambda: open_file(master))
+    filemenu.add_command(label="Reload", command=lambda: reload(master))
 
-filemenu.add_separator()
+    filemenu.add_separator()
 
-filemenu.add_command(label="Exit", command=master.quit)
-menubar.add_cascade(label="File", menu=filemenu)
+    filemenu.add_command(label="Exit", command=master.quit)
+    menubar.add_cascade(label="File", menu=filemenu)
 
-master.config(menu=menubar)
+    master.config(menu=menubar)
 
-tk.mainloop()
+    if os.path.isfile(args.xml_file):
+        global counter
+        global filename
+        counter = 0
+        filename = args.xml_file
+
+        tree = ET.parse(filename)
+
+        counter = 0
+        root = tree.getroot()
+
+        print_coverage(root, 0, master)
+
+    tk.mainloop()
